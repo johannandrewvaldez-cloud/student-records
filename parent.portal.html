@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parent Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .portal-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        .portal-box input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; }
+        .portal-box button { width: 95%; padding: 12px; background-color: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; }
+        .portal-box button:hover { background-color: #005fa3; }
+        #result { margin-top: 20px; text-align: left; font-size: 16px; }
+        #result p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<div class="portal-box">
+    <h2>Parent Portal</h2>
+    <input type="text" id="studentName" placeholder="Enter child's name or LRN">
+    <button onclick="checkStudent()">Check Grades</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    // Get students from home.html
+    var students = JSON.parse(localStorage.getItem("students")) || [];
+
+    function checkStudent() {
+        var input = document.getElementById("studentName").value.trim().toLowerCase();
+        var resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "";
+
+        if (!input) { alert("Enter name or LRN!"); return; }
+
+        var student = students.find(s => s.name.toLowerCase() === input || s.lrn === input);
+
+        if(student){
+            resultDiv.innerHTML = `
+                <p><strong>Name:</strong> ${student.name}</p>
+                <p><strong>LRN:</strong> ${student.lrn}</p>
+                <p><strong>Grade:</strong> ${student.grade}</p>
+                <p><strong>Section:</strong> ${student.section}</p>
+                <p><strong>1st Semester:</strong> ${student.s1}</p>
+                <p><strong>2nd Semester:</strong> ${student.s2}</p>
+                <p><strong>Average:</strong> ${student.avg}</p>
+            `;
+        } else {
+            resultDiv.innerHTML = `<p style="color:red;">Student not found!</p>`;
+        }
+    }
+</script>
+
+</body>
+</html>
